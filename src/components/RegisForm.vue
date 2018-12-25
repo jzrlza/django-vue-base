@@ -1,15 +1,17 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <form class="form-signin" v-on:submit.prevent="doLogin">
+    <form class="form-regis" v-on:submit.prevent="register">
       <h3>Username</h3>
       <input v-model="username" type="text" name="username"><br>
       <h3>Password</h3>
-      <input v-model="password" type="password" name="password"><br><br>
-      <button class="normal-btn submit-btn" type="submit">Login</button>
+      <input v-model="password" type="password" name="password"><br>
+      <h3>Confirm Password</h3>
+      <input v-model="confirm_password" type="password" name="password"><br><br>
+      <button class="normal-btn submit-btn" type="submit">Register</button>
     </form>
     <br>
-    <button class="normal-btn" v-on:click="toRegis">Register</button>
+    <button class="normal-btn" v-on:click="toLogin">Login</button>
   </div>
 </template>
 
@@ -22,39 +24,45 @@ export default {
     return {
       username: '',
       password: '',
-      msg: 'Login'
+      confirm_password: '',
+      msg: 'Registeration'
     }
   },
   methods: {
-    doLogin () {
+    register () {
       //alert(this.username)
       //alert(this.password)
       var self = this
 
+      if (this.password != this.confirm_password) {
+        alert('Password Failed')
+        return
+      }
+
       const input = {
         'username': this.username,
-        'password' : this.password
+        'password' : this.password,
       }
       //alert(input['name']);
       //alert(input['password']);
 
-      axios.post('login', input).then(req =>{
+      axios.post('register', input).then(req =>{
         console.log(req.data)
             //alert(req.data.token);
             //self.type = req.data.type;
             
-        if (req.data != 'None'){
-          alert('Welcome!')
-          router.push("/messages")
-        } else {
-          alert(req.data.message)
+        if (req.data == 'Success'){
+          alert('Success')
           router.push("/login")
+        } else {
+          alert('Failed')
+          router.push("/regis")
         }
         return req
       })
     },
-    toRegis () {
-      router.push("/regis")
+    toLogin () {
+      router.push("/login")
     },
   }
 }

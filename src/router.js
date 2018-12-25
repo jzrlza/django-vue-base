@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueDemo from '@/components/VueDemo'
+import HomeSection from '@/components/HomeSection'
 import LoginForm from '@/components/LoginForm'
+import RegisForm from '@/components/RegisForm'
 import Messages from '@/components/Messages'
 
 Vue.use(VueRouter)
@@ -11,7 +13,7 @@ export default new VueRouter({
     {
       path: '/',
       name: 'home',
-      component: LoginForm
+      component: HomeSection
     },
     {
       path: '/messages',
@@ -20,6 +22,10 @@ export default new VueRouter({
     {
       path: '/login',
       component: LoginForm
+    },
+    {
+      path: '/regis',
+      component: RegisForm
     }
   ]
 })

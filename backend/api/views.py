@@ -1,14 +1,15 @@
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from rest_framework import viewsets
+from rest_framework.generics import ListAPIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from django.shortcuts import get_object_or_404, render
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Message, MessageSerializer
+import json
 
-
-# Serve Vue Application
-index_view = never_cache(TemplateView.as_view(template_name='index.html'))
-
-
+from .models import *
 
 class MessageViewSet(viewsets.ModelViewSet):
     """
@@ -19,10 +20,47 @@ class MessageViewSet(viewsets.ModelViewSet):
 
 
 
-#class PostsView(ListAPIView):
-#    authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
-#    permission_classes = (IsAuthenticated,)
+class PostsView(ListAPIView):
+    authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
+    #permission_classes = (IsAuthenticated,)
 
 
 
+#@ensure_csrf_cookie
+@csrf_exempt
+def home(request):
+    return render(request, 'index.html')
 
+@csrf_exempt
+def login(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            user = User.objects.get(username=data['username'], password=data['password'])
+        except User.DoesNotExist:
+            user = None
+
+        return HttpResponse(user)
+    else:
+        return None
+
+
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        
+        try:
+            user = User.objects.get(username=data['username'])
+        except User.DoesNotExist:
+            user = None
+
+        if user :
+            return HttpResponse('User already Exists')
+        else :
+            new_user = User(username=data['username'],password=data['password'])
+            new_user.save()
+
+            return HttpResponse('Success')
+    else:
+        return None
