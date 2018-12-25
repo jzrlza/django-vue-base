@@ -1,21 +1,25 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
 import VueDemo from '@/components/VueDemo'
+import LoginForm from '@/components/LoginForm'
 import Messages from '@/components/Messages'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-export default new Router({
+export default new VueRouter({
   routes: [
     {
       path: '/',
       name: 'home',
-      component: VueDemo
+      component: LoginForm
     },
     {
       path: '/messages',
-      name: 'messages',
       component: Messages
+    },
+    {
+      path: '/login',
+      component: LoginForm
     }
   ]
 })

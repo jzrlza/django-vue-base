@@ -9,11 +9,20 @@ from .models import Message, MessageSerializer
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
+
 class MessageViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows messages to be viewed or edited.
     """
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+
+
+#class PostsView(ListAPIView):
+#    authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
+#    permission_classes = (IsAuthenticated,)
+
+
 
 

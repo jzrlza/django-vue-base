@@ -8,6 +8,8 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
+
+
 from .api.views import index_view, MessageViewSet
 
 router = routers.DefaultRouter()
@@ -16,13 +18,20 @@ router.register('messages', MessageViewSet)
 urlpatterns = [
 
     # http://localhost:8000/
-    path('', index_view, name='index'),
+    path('', index_view),
 
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
+
+    path('login', index_view)
+
+
+    #url(r'^auth/obtain_token/', obtain_jwt_token),
+    
+    #url(r'^auth/refresh_token/', refresh_jwt_token),
 ]
 
 
