@@ -47,7 +47,8 @@ export default {
           alert('Welcome!')
           router.push("/messages")
         } else {
-          alert(req.data.message)
+          alert('Login Failed')
+          console.log('Login Failed')
           router.push("/login")
         }
         return req
