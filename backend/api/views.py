@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
 import json
+import bcrypt
 
 from .models import *
 
@@ -36,8 +37,14 @@ def login(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         try:
-            user = User.objects.get(username=data['username'], password=data['password'])
+            user = User.objects.get(username=data['username'])
         except User.DoesNotExist:
+            user = None
+            return HttpResponse(user)
+
+        if bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')) :
+            print("It Matches!")
+        else:
             user = None
 
         return HttpResponse(user)
@@ -58,7 +65,9 @@ def register(request):
         if user :
             return HttpResponse('User already Exists')
         else :
-            new_user = User(username=data['username'],password=data['password'])
+            encrypt_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+            
+            new_user = User(username=data['username'],password=encrypt_password.decode('utf-8'))
             new_user.save()
 
             return HttpResponse('Success')
