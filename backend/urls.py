@@ -30,8 +30,13 @@ urlpatterns = [
 
     path('register', register),
 
-    path('auth/obtain_token/', obtain_jwt_token),
-    path('auth/refresh_token/', refresh_jwt_token),
+    path('user', user),
+
+    path(r'auth/obtain_token/', obtain_jwt_token),
+    path(r'auth/refresh_token/', refresh_jwt_token),
+
+    path('public', public),
+    path('private', private),
 
     #url(r'^auth/obtain_token/', obtain_jwt_token),
     

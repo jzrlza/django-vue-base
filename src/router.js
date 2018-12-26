@@ -5,6 +5,7 @@ import HomeSection from '@/components/HomeSection'
 import LoginForm from '@/components/LoginForm'
 import RegisForm from '@/components/RegisForm'
 import Messages from '@/components/Messages'
+import WelcomeSection from '@/components/WelcomeSection'
 
 Vue.use(VueRouter)
 
@@ -26,6 +27,10 @@ export default new VueRouter({
     {
       path: '/regis',
       component: RegisForm
+    },
+    {
+      path: '/welcome',
+      component: WelcomeSection
     }
   ]
 })

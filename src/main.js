@@ -14,23 +14,36 @@ Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false
 
+axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+
 // Vue.use(VueRouter)
 
 const store = new Vuex.Store({
   state: {
-    jwt: localStorage.getItem('t'),
+    authUser: {},
+    isAuthenticated: false,
+    jwt: localStorage.getItem('token'),
     endpoints: {
-      obtainJWT: 'http://0.0.0.0:10000/auth/obtain_token',
-      refreshJWT: 'http://0.0.0.0:10000/auth/refresh_token'
+      obtainJWT: 'http://127.0.0.1:8000/auth/obtain_token/',
+      refreshJWT: 'http://127.0.0.1:8000/auth/refresh_token/',
+      baseUrl: 'http://127.0.0.1:8000/'
     }
   },
   mutations: {
+  	setAuthUser(state, {
+      authUser,
+      isAuthenticated
+    }) {
+      Vue.set(state, 'authUser', authUser)
+      Vue.set(state, 'isAuthenticated', isAuthenticated)
+    },
     updateToken(state, newToken){
-      localStorage.setItem('t', newToken);
+      localStorage.setItem('token', newToken);
       state.jwt = newToken;
     },
     removeToken(state){
-      localStorage.removeItem('t');
+      localStorage.removeItem('token');
       state.jwt = null;
     }
   },

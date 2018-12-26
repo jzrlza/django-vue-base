@@ -38,11 +38,10 @@ export default {
       //alert(input['name']);
       //alert(input['password']);
 
-      axios.post('login', input).then(req =>{
-        console.log(req.data)
-            //alert(req.data.token);
-            //self.type = req.data.type;
-            
+      axios.post(this.$store.state.endpoints.obtainJWT, input).then((response) =>{
+        //console.log(req.data)
+           this.$store.commit('updateToken', response.data.token)
+           /*
         if (req.data != 'None'){
           alert('Welcome!')
           router.push("/messages")
@@ -51,8 +50,40 @@ export default {
           console.log('Login Failed')
           router.push("/login")
         }
-        return req
-      })
+        return req*/
+          const base = {
+            baseURL: this.$store.state.endpoints.baseUrl,
+            headers: {
+            // Set your Authorization to 'JWT', not Bearer!!!
+              Authorization: `JWT ${this.$store.state.jwt}`,
+              'Content-Type': 'application/json'
+            },
+            xhrFields: {
+                withCredentials: true
+            }
+          }
+
+          const axiosInstance = axios.create(base)
+          axiosInstance({
+            url: "/user",
+            method: "get",
+            params: {}
+          })
+            .then((response) => {
+              this.$store.commit("setAuthUser",
+                {authUser: response.data, isAuthenticated: true}
+              )
+              router.push('welcome')
+            })
+
+        })
+        .catch((error) => {
+          console.log(error);
+          console.debug(error);
+          console.dir(error);
+        })
+
+      
     },
     toRegis () {
       router.push("/regis")

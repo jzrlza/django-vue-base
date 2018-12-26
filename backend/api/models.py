@@ -1,6 +1,6 @@
 from django.db import models
 from rest_framework import serializers
-
+from django.contrib import auth
 
 class Message(models.Model):
     subject = models.CharField(max_length=200)
@@ -12,9 +12,5 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
         model = Message
         fields = ('url', 'subject', 'body', 'pk')
 
-class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
-    username = models.CharField(max_length=30)
-    password = models.CharField(max_length=512)
-    def __str__(self):
-        return self.username
+class User(auth.models.User):
+    user_ptr = None

@@ -1,9 +1,13 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
+
 from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view
+
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
@@ -23,7 +27,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
 class PostsView(ListAPIView):
     authentication_class = (JSONWebTokenAuthentication,) # Don't forget to add a 'comma' after first element to make it a tuple
-    #permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated,)
 
 
 
@@ -65,11 +69,29 @@ def register(request):
         if user :
             return HttpResponse('User already Exists')
         else :
-            encrypt_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+            #encrypt_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
             
-            new_user = User(username=data['username'],password=encrypt_password.decode('utf-8'))
+            new_user = User(username=data['username'],password=data['password'])
             new_user.save()
 
             return HttpResponse('Success')
     else:
         return None
+
+@csrf_exempt
+def user(request):
+    if request.method == 'GET':
+        return HttpResponse('Success')
+    else:
+        return None
+
+
+def public(request):
+    return HttpResponse("You don't need to be authenticated to see this")
+
+
+@api_view(['GET'])
+def private(request):
+    return HttpResponse("You should not see this message if not authenticated!")
+
+
