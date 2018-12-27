@@ -12,7 +12,6 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
 import json
-import bcrypt
 
 from .models import *
 from django.contrib.auth.models import User
@@ -36,25 +35,6 @@ class PostsView(ListAPIView):
 @csrf_exempt
 def home(request):
     return render(request, 'index.html')
-
-@csrf_exempt
-def login(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        try:
-            user = User.objects.get(username=data['username'])
-        except User.DoesNotExist:
-            user = None
-            return HttpResponse(user)
-
-        if bcrypt.checkpw(data['password'].encode('utf-8'), user.password.encode('utf-8')) :
-            print("It Matches!")
-        else:
-            user = None
-
-        return HttpResponse(user)
-    else:
-        return None
 
 
 @csrf_exempt
