@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>  
-
+<br><br><br>
       <button class="normal-btn" v-on:click="toLogin">Login</button>
 
     <br><br>

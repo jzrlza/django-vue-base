@@ -8,9 +8,13 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import jwt_decode from 'jwt-decode'
 import Vuex from 'vuex'
+import VueTemperatureFilter from 'vue-temperature-filter'
 
 Vue.use(Vuex);
 Vue.use(VueAxios, axios);
+Vue.use(VueTemperatureFilter, {
+  showText: true
+})
 
 Vue.config.productionTip = false
 

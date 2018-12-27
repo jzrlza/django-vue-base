@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <h1 id='title'>Django VueJs</h1>
+    <h1 id='title'>Temperature Stats</h1>
     <!--
     <div id="nav">
      <router-link :to="{ name: 'home' }">Vue</router-link> |

@@ -1,24 +1,41 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>  
-
-      
+    <h1>{{ msg }} {{ username }}!</h1>  
+    <h5> Measured tempurature from IOT device: </h5>
+<p>{{ 15 | temperature(true, true) }}</p>
+	<h5> Statistics: </h5>
+	<chart></chart>
+    <button class="normal-btn exit-btn" v-on:click="doLogout">Logout</button>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import router from '@/router'
+import Chart from '@/components/Chart'
 
 export default {
+  name: 'Welcome',
+  components: {
+    Chart
+  },
   data () {
     return {
       username: '',
-      msg: 'Welcome, ....!'
+      msg: 'Welcome,'
     }
   },
   methods: {
-    
+    doLogout() {
+    	this.$store.commit('updateToken', '')
+    	this.$store.commit("setAuthUser",
+                {authUser: '', isAuthenticated: false}
+              )
+    	router.push('/')
+    }
+  },
+  mounted(){
+    this.username = this.$store.state.authUser
   }
 }
 </script>
@@ -44,6 +61,9 @@ input:focus {
   text-decoration: none;
   font-size: 16px;
   height: 35px;
+}
+.exit-btn {
+	background-color: red;
 }
 input, .normal-btn {
   width: 200px;

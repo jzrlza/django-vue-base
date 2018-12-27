@@ -15,6 +15,7 @@ import json
 import bcrypt
 
 from .models import *
+from django.contrib.auth.models import User
 
 class MessageViewSet(viewsets.ModelViewSet):
     """
@@ -80,8 +81,13 @@ def register(request):
 
 @csrf_exempt
 def user(request):
-    if request.method == 'GET':
-        return HttpResponse('Success')
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        try:
+            user = User.objects.get(username=data['username'])
+        except User.DoesNotExist:
+            return None
+        return HttpResponse(data['username'])
     else:
         return None
 

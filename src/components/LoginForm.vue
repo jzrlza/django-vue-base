@@ -64,10 +64,13 @@ export default {
           }
 
           const axiosInstance = axios.create(base)
-          axiosInstance({
+          /*axiosInstance({
             url: "/user",
             method: "get",
             params: {}
+          })*/
+          axios.post("/user", {
+            'username': this.username
           })
             .then((response) => {
               this.$store.commit("setAuthUser",
