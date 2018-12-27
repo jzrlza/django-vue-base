@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.cache import never_cache
 
 from rest_framework import viewsets
@@ -71,6 +72,29 @@ def user(request):
     else:
         return None
 
+@csrf_exempt
+def get_temp(request):
+    return HttpResponse(25) #Farenheit
+
+@csrf_exempt
+def get_temp_stats(request):
+    column_1 = 'time'
+    column_2 = '°C'
+    chart_data = {
+        'columns': [column_1, column_2],
+        'rows': [
+
+                {column_1: '08:00', column_2: 25},
+                {column_1: '09:00', column_2: 10},
+                {column_1: '10:00', column_2: -8},
+                {column_1: '13:00', column_2: 18},
+                {column_1: '14:00', column_2: 27},
+                {column_1: '15:00', column_2: 6},
+                
+                
+            ]
+    }
+    return JsonResponse(chart_data)
 
 def public(request):
     return HttpResponse("You don't need to be authenticated to see this")

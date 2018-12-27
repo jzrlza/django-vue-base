@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import VeLine from 'v-charts/lib/line.common'
 export default {
   name: 'Chart',
@@ -12,17 +13,18 @@ export default {
   data () {
     return {
       chartData: {
-        columns: ['date', 'Temperature (C)'],
+        columns: [],
         rows: [
-          { 'date': '01-01', 'Temperature (C)': 25 },
-          { 'date': '01-02', 'Temperature (C)': 10 },
-          { 'date': '01-03', 'Temperature (C)': -8 },
-          { 'date': '01-04', 'Temperature (C)': 18 },
-          { 'date': '01-05', 'Temperature (C)': 30 },
-          { 'date': '01-06', 'Temperature (C)': 5 },
         ]
       }
     }
+  },
+  mounted(){
+
+    axios.get("/get-temp-stats")
+            .then((response) => {
+              this.chartData = response.data
+            })
   }
 }
 </script>

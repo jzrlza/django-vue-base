@@ -1,9 +1,9 @@
 <template>
   <div class="hello">
     <h1>{{ msg }} {{ username }}!</h1>  
-    <h5> Measured tempurature from IOT device: </h5>
-<p>{{ 15 | temperature(true, true) }}</p>
-	<h5> Statistics: </h5>
+    <h3> Measured tempurature from IOT device: </h3>
+<p>{{ farenheit | temperature(true, true) }}</p>
+	<h3> Statistics: </h3>
 	<chart></chart>
     <button class="normal-btn exit-btn" v-on:click="doLogout">Logout</button>
   </div>
@@ -22,6 +22,7 @@ export default {
   data () {
     return {
       username: '',
+      farenheit: 0,
       msg: 'Welcome,'
     }
   },
@@ -36,6 +37,11 @@ export default {
   },
   mounted(){
     this.username = this.$store.state.authUser
+
+    axios.get("/ask-current-temp")
+            .then((response) => {
+              this.farenheit = response.data
+            })
   }
 }
 </script>

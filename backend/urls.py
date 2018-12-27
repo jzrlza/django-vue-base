@@ -26,11 +26,12 @@ urlpatterns = [
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
 
-    path('login', login),
-
     path('register', register),
 
     path('user', user),
+
+    path('ask-current-temp', get_temp),
+    path('get-temp-stats', get_temp_stats),
 
     path(r'auth/obtain_token/', obtain_jwt_token),
     path(r'auth/refresh_token/', refresh_jwt_token),
